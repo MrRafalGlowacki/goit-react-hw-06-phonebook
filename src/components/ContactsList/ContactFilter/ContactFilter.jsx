@@ -1,14 +1,13 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { setFilterAction } from 'redux/filtersSlice';
-
+import { getFilter } from 'redux/selectors';
 import css from './ContactFilter.module.css';
 
 export const ContactFilter = () => {
-  
   const dispatch = useDispatch();
-  const filter = useSelector(state => state.filter.filter);
-  
+  const filter = useSelector(getFilter);
+
   const handleChange = event => {
     const value = event.target.value;
     dispatch(setFilterAction(value));
@@ -29,4 +28,3 @@ export const ContactFilter = () => {
     </>
   );
 };
-

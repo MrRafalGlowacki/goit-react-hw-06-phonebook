@@ -1,31 +1,20 @@
 import { createSlice, nanoid } from '@reduxjs/toolkit';
 
-// const initState = {
-//   inputs: {
-//     name: '',
-//     number: '',
-//     filter: '',
-//   },
-//   contacts : []
-// }
+const initState = {
+  contacts: [],
+  inputs: {
+    name: '',
+    number: '',
+  },
+};
 
 const contactsSlice = createSlice({
   name: 'contacts',
-  initialState: [],
+  initialState: initState,
   reducers: {
-    // 1.
-    // inputHandler: (state, action) => {
-    //   switch
-    // }
-
-    // 2.
-    // onChangeName
-    // onChangeNumber
-    // onChangeFilter
     addContactAction: {
       reducer(state, action) {
-        console.log(action.payload);
-        state.unshift(action.payload);
+        state.contacts.unshift(action.payload);
       },
       prepare(contact) {
         return {
@@ -38,15 +27,35 @@ const contactsSlice = createSlice({
       },
     },
     setContactsAction: (state, action) => {
-      console.log(action.payload);
-      return action.payload;
+      state.contacts = action.payload;
     },
     deleteContactAction: (state, action) => {
-      const index = state.findIndex(contact => contact.id === action.payload);
-      state.splice(index, 1);
+      const index = state.contacts.findIndex(
+        contact => contact.id === action.payload
+      );
+      state.contacts.splice(index, 1);
+    },
+    inputHandlerAction: (state, action) => {
+      const { name, value } = action.payload;
+      state.inputs[name] = value;
+      // switch (name) {
+      //   case 'name':
+      //     state.inputs.name = value;
+      //     break;
+      //   case 'number':
+      //     state.inputs.number = value;
+      //     break;
+      //   default:
+      //     break;
+      // }
     },
   },
 });
 
-export const { addContactAction, setContactsAction, deleteContactAction } = contactsSlice.actions;
+export const {
+  addContactAction,
+  setContactsAction,
+  deleteContactAction,
+  inputHandlerAction,
+} = contactsSlice.actions;
 export const contactsReducer = contactsSlice.reducer;

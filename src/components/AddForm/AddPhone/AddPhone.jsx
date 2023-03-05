@@ -1,15 +1,25 @@
 import React from 'react';
-// import PropTypes from 'prop-types';
+import { useDispatch, useSelector } from 'react-redux';
+import { inputHandlerAction } from 'redux/contactsSlice';
+import { getNumber } from 'redux/selectors';
 import css from './AddPhone.module.css';
 
-export const AddPhone = ({ onChange, number }) => {
+export const AddPhone = () => {
+  const dispatch = useDispatch();
+  const number = useSelector(getNumber);
+
+  const handleChange = event => {
+    const payload = { name: event.target.name, value: event.target.value };
+    dispatch(inputHandlerAction(payload));
+  };
+
   return (
     <>
       <label htmlFor="number" className={css.number}>
         Number
       </label>
       <input
-        onChange={onChange}
+        onChange={handleChange}
         autoComplete="off"
         type="tel"
         name="number"
@@ -22,8 +32,3 @@ export const AddPhone = ({ onChange, number }) => {
     </>
   );
 };
-
-// AddPhone.propTypes = {
-//   onChange: PropTypes.func,
-//   number: PropTypes.string,
-// };
