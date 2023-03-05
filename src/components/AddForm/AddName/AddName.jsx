@@ -1,8 +1,9 @@
 import React from 'react';
-import PropTypes from 'prop-types';
+// import PropTypes from 'prop-types';
 import css from './AddName.module.css';
 
 export const AddName = ({ onChange, name })=> {
+ // useReducer
  
     return (
       <>
@@ -25,7 +26,7 @@ export const AddName = ({ onChange, name })=> {
   
 }
 
-AddName.propTypes = {
-  onChange: PropTypes.func,
-  name: PropTypes.string,
-};
+// AddName.propTypes = {
+//   onChange: PropTypes.func,
+//   name: PropTypes.string,
+// };

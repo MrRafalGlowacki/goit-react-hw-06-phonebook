@@ -1,5 +1,5 @@
 import React from 'react';
-import PropTypes from 'prop-types';
+// import PropTypes from 'prop-types';
 import css from './AddPhone.module.css';
 
 export const AddPhone = ({ onChange, number }) => {
@@ -23,7 +23,7 @@ export const AddPhone = ({ onChange, number }) => {
   );
 };
 
-AddPhone.propTypes = {
-  onChange: PropTypes.func,
-  number: PropTypes.string,
-};
+// AddPhone.propTypes = {
+//   onChange: PropTypes.func,
+//   number: PropTypes.string,
+// };

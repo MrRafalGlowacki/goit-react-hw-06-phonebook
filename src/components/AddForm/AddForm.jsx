@@ -1,11 +1,11 @@
 import React from 'react';
-import PropTypes from 'prop-types';
+// import PropTypes from 'prop-types';
 import css from './AddForm.module.css';
 import { AddName } from './AddName/AddName';
 import { AddPhone } from './AddPhone/AddPhone';
 
 export const AddForm = ({ onChange, onSubmit, name, number }) => {
-
+// form state
   return (
     <>
       <h2 className={css.title}>Phonebook</h2>
@@ -20,9 +20,9 @@ export const AddForm = ({ onChange, onSubmit, name, number }) => {
   );
 };
 
-AddForm.propTypes = {
-  onChange: PropTypes.func,
-  onSubmit: PropTypes.func,
-  name: PropTypes.string,
-  number: PropTypes.string,
-};
+// AddForm.propTypes = {
+//   onChange: PropTypes.func,
+//   onSubmit: PropTypes.func,
+//   name: PropTypes.string,
+//   number: PropTypes.string,
+// };

@@ -1,16 +1,22 @@
 import React, { useEffect, useState } from 'react';
 import { AddForm } from './AddForm/AddForm';
 import { ContactList } from 'components/ContactsList/ContactsList';
-import { nanoid } from '@reduxjs/toolkit';
+import { useDispatch, useSelector } from 'react-redux';
+import {
+  addContactAction,
+  deleteContactAction,
+  setContactsAction,
+} from 'redux/contactsSlice';
 
 export const App = () => {
-  const [contacts, setContacts] = useState([]);
-  const [filter, setFilter] = useState('');
+  // const [filter, setFilter] = useState('');
   const [name, setName] = useState('');
   const [number, setNumber] = useState('');
-
+  const contactsList = useSelector(state => state.contacts);
+  const dispatch = useDispatch();
+  // console.log(contactsList.length);
+  const filter = useSelector(state => state.filter.filter);
   const handleContactWillUnmount = () => {
-    console.log(filter);
     if (filter !== '') {
       return;
       // } else {
@@ -19,37 +25,23 @@ export const App = () => {
   };
 
   useEffect(() => {
-    const savedContacts = JSON.parse(localStorage.getItem('contacts'));
-    setContacts(savedContacts);
-  }, []);
-  useEffect(() => {
-    if (contacts && contacts.length > 0) {
-      const contactsArrayStringified = JSON.stringify(contacts);
-      localStorage.setItem('contacts', contactsArrayStringified);
+    try {
+      const savedContacts = JSON.parse(localStorage.getItem('contacts'));
+      if (savedContacts && savedContacts.length > 0) {
+        dispatch(setContactsAction(savedContacts));
+      }
+    } catch (error) {
+      console.error('Error parsing saved contacts from localStorage:', error);
     }
-  }, [contacts]);
+  }, [dispatch]);
 
-  // componentDidUpdate() {
-  //   if (this.state.contacts !== prevState.contacts) {
-  //     const contactsArrayStringified = JSON.stringify(this.state.contacts);
-  //     localStorage.setItem('contacts', contactsArrayStringified);
-  //   }
-  // }
-  // componentDidMount() {
-
-  //   if (!savedContacts) {
-  //     return;
-  //   } else
-  //     try {
-  //       this.setState({ contacts: savedContacts });
-  //     } catch (error) {
-  //       console.log(error);
-  //     }
-  // }
+  useEffect(() => {
+    console.log(contactsList);
+    localStorage.setItem('contacts', JSON.stringify(contactsList));
+  }, [contactsList]);
 
   const handleRemoveContact = id => {
-    const remainingContacts = contacts.filter(contact => contact.id !== id);
-    setContacts(remainingContacts);
+    dispatch(deleteContactAction(id));
   };
   const handleChange = event => {
     const { name, value } = event.target;
@@ -59,25 +51,26 @@ export const App = () => {
         return setName(value);
       case 'number':
         return setNumber(value);
-      case 'filter':
-        return setFilter(value);
+      // case 'filter':
+      //   return setFilter(value);
       default:
         return null;
     }
   };
+
   const handleSubmit = event => {
     event.preventDefault();
-    const found = contacts.find(contact => contact.name === name);
+
+    const found = contactsList.find(contact => contact.name === name);
     if (found) {
       alert(`${name} is already in contacts`);
     } else {
-      const contact = {
-        id: nanoid(),
-        name: name,
-        number: number,
-      };
-      const newContacts = [contact, ...contacts];
-      setContacts(newContacts);
+      dispatch(
+        addContactAction({
+          name: name,
+          number: number,
+        })
+      );
       setName('');
       setNumber('');
     }
@@ -92,8 +85,8 @@ export const App = () => {
         number={number}
       />
       <ContactList
-        contactList={contacts}
-        filter={filter}
+        contactList={contactsList}
+        // filter={filter}
         onChange={handleChange}
         onContactRemove={handleRemoveContact}
         onUnmount={handleContactWillUnmount}

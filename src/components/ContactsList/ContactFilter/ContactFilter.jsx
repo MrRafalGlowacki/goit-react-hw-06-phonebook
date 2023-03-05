@@ -1,14 +1,25 @@
 import React from 'react';
-import PropTypes from 'prop-types';
+import { useDispatch, useSelector } from 'react-redux';
+import { setFilterAction } from 'redux/filtersSlice';
+
 import css from './ContactFilter.module.css';
 
-export const ContactFilter = ({ filter, onChange }) => {
+export const ContactFilter = () => {
+  
+  const dispatch = useDispatch();
+  const filter = useSelector(state => state.filter.filter);
+  
+  const handleChange = event => {
+    const value = event.target.value;
+    dispatch(setFilterAction(value));
+  };
+
   return (
     <>
       <p className={css.filter}>Find contacts by name</p>
       <input
         className={css.filter}
-        onChange={onChange}
+        onChange={handleChange}
         autoComplete="off"
         type="text"
         name="filter"
@@ -18,7 +29,4 @@ export const ContactFilter = ({ filter, onChange }) => {
     </>
   );
 };
-ContactFilter.propTypes = {
-  filter: PropTypes.string,
-  onChange: PropTypes.func,
-};
+
